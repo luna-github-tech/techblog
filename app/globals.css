@@ -1,0 +1,124 @@
+@import "tailwindcss";
+@tailwind components;
+@tailwind utilities;
+@plugin "@tailwindcss/typography";
+
+
+
+/* Focus visible para teclado */
+:focus-visible {
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Utilidades para las fuentes */
+@layer utilities {
+.font-poppins {
+font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, Segoe UI,
+Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+}
+.font-roboto {
+font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system, Segoe UI,
+Poppins, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+}
+}
+
+
+
+/* El wrapper nunca debe exceder el ancho del aside */
+.subscribe-ml-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Quita fondos/padding/márgenes del contenedor del embed */
+.subscribe-ml-wrapper .ml-form-embed,
+.subscribe-ml-wrapper .ml-form-embedContainer,
+.subscribe-ml-wrapper .ml-form-embedWrapper,
+.subscribe-ml-wrapper .ml-form-embedBody,
+.subscribe-ml-wrapper .ml-form-success,
+.subscribe-ml-wrapper form {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Oculta títulos del embed (ya usas tu propio heading) */
+.subscribe-ml-wrapper .ml-block-header,
+.subscribe-ml-wrapper .ml-form-embedHeadline,
+.subscribe-ml-wrapper .ml-form-embedDescription {
+  display: none !important;
+}
+
+/* Inputs y botón con estilo compacto */
+.subscribe-ml-wrapper input[type="email"],
+.subscribe-ml-wrapper input[type="text"] {
+  width: 100% !important;
+  height: 40px !important;
+  border: 1px solid #e5e7eb !important;   /* gray-200 */
+  background: #f9fafb !important;         /* gray-50 */
+  border-radius: 0.5rem !important;        /* rounded-lg */
+  padding: 0 12px !important;
+  font-size: 0.9rem !important;
+}
+
+.subscribe-ml-wrapper button,
+.subscribe-ml-wrapper .primary,
+.subscribe-ml-wrapper [type="submit"] {
+  width: 100% !important;
+  height: 40px !important;
+  border-radius: 0.5rem !important;
+  background: #111827 !important;         /* neutral oscuro como en tu botón */
+  color: #fff !important;
+  font-weight: 700 !important;
+  border: 0 !important;
+}
+
+.subscribe-ml-wrapper .ml-form-recaptcha {
+  margin-top: 8px !important;
+}
+
+/* Mensaje de éxito compacto */
+.subscribe-ml-wrapper .ml-form-successContent {
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0 !important;
+  color: #065f46 !important;
+  border-radius: 0.5rem !important;
+  padding: 12px !important;
+  font-size: 0.9rem !important;
+}
+
+.subscribe-ml-wrapper * {
+  max-width: 100% !important;
+}
