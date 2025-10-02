@@ -3,10 +3,10 @@ import { useState } from "react";
 
 export default function SubscribeBanner() {
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<"idle"|"loading"|"ok"|"error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
   const [msg, setMsg] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
     setMsg("");
@@ -17,14 +17,17 @@ export default function SubscribeBanner() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      const data = await res.json();
+
+      const data: { error?: string } = await res.json();
       if (!res.ok) throw new Error(data?.error || "Error desconocido");
+
       setStatus("ok");
       setMsg("✅ ¡Gracias por suscribirte!");
       setEmail("");
-    } catch (err: any) {
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Ocurrió un error";
       setStatus("error");
-      setMsg(err.message || "Ocurrió un error");
+      setMsg(message);
     }
   }
 
@@ -33,7 +36,7 @@ export default function SubscribeBanner() {
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="text-center md:text-left">
           <h3 className="text-lg font-semibold text-blue-700">Suscríbete al boletín</h3>
-          <p className="text-sm text-blue-600">
+        <p className="text-sm text-blue-600">
             Recibe artículos, tips y recursos directamente en tu correo 📬
           </p>
         </div>
@@ -44,7 +47,7 @@ export default function SubscribeBanner() {
             required
             placeholder="tu@email.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             className="flex-1 rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button

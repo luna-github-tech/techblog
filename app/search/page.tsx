@@ -1,22 +1,36 @@
-import { allPosts } from "contentlayer/generated";
+import { allPosts, type Post } from "contentlayer/generated";
 import PostCard from "../components/PostCard";
 import SearchBox from "../components/SearchBox";
 
-function matches(post: any, q: string) {
-  const hay = (s?: string) => (s || "").toLowerCase().includes(q);
+type SearchParams = Record<string, string | string[] | undefined>;
+
+function matches(post: Post, q: string) {
+  const hay = (s?: string) => (s ?? "").toLowerCase().includes(q);
+  const tags = Array.isArray(post.tags) ? post.tags : [];
   return (
     hay(post.title) ||
     hay(post.summary) ||
     hay(post.category) ||
-    (post.tags || []).some((t: string) => hay(t))
+    tags.some((t) => hay(t))
   );
 }
 
-export default function SearchPage({ searchParams }: { searchParams?: { q?: string } }) {
-  const raw = (searchParams?.q || "").trim();
+export default function SearchPage({
+  searchParams,
+}: {
+  searchParams?: SearchParams;
+}) {
+  const rawParam = Array.isArray(searchParams?.q)
+    ? searchParams?.q[0]
+    : searchParams?.q;
+  const raw = (rawParam ?? "").trim();
   const q = raw.toLowerCase();
 
-  const posts = [...allPosts].sort((a, b) => +new Date(b.date) - +new Date(a.date));
+  const posts = [...allPosts].sort(
+    (a, b) =>
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
   const results = q ? posts.filter((p) => matches(p, q)) : [];
 
   return (
@@ -29,7 +43,9 @@ export default function SearchPage({ searchParams }: { searchParams?: { q?: stri
       </div>
 
       {!raw && (
-        <p className="text-gray-600">Escribe un término y presiona Enter para buscar.</p>
+        <p className="text-gray-600">
+          Escribe un término y presiona Enter para buscar.
+        </p>
       )}
 
       {raw && (
