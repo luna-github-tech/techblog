@@ -10,15 +10,28 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // 🧠 1. Ignorar carpetas generadas automáticamente
   {
     ignores: [
       "node_modules/**",
       ".next/**",
       "out/**",
       "build/**",
+      ".contentlayer/**", // ⬅️ agregamos esta línea
       "next-env.d.ts",
     ],
+  },
+
+  // 🧠 2. Extensiones base de Next.js + TypeScript
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // 🧠 3. (Opcional) Reglas personalizadas
+  {
+    rules: {
+      // Puedes relajar algunas reglas si quieres evitar bloqueos por errores leves
+      "@typescript-eslint/no-explicit-any": "error", // sigue marcando 'any'
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    },
   },
 ];
 

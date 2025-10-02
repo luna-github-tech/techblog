@@ -6,15 +6,13 @@ import { slugify } from "./lib/slug"
 
 
 // TUS componentes existentes:
-import MobileSidebar from "./components/MobileSidebar"
+
 import SocialPlugin from "./components/SocialPlugin"
 import SubscribeCard from "./components/SubscribeCard"
-import AboutCard from "./components/AboutCard"
 import AboutBlog from "./components/AboutBlog"
 import PostCard from "./components/PostCard"
 import CategoryChips from "./components/CategoryChips"
 
-import { allPosts } from 'contentlayer/generated'
 
 // DATA desde contentlayer:
 import {
@@ -32,11 +30,7 @@ export default function Page() {
   const categoriesCount = getCategoriesCount() // sidebar izq
   const tags = getAllTags()                 // tags de la derecha
   
-   // 🔹 Ordena los posts por fecha descendente
-  const posts = [...allPosts].sort(
-    (a, b) => +new Date(b.date) - +new Date(a.date)
-  )
-
+   
 
   return (
     <div className="container mx-auto px-4 mt-6 md:mt-8">

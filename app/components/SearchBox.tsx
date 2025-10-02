@@ -1,52 +1,49 @@
+// app/components/SearchBox.tsx
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export default function SearchBox({ placeholder = "Buscar" }: { placeholder?: string }) {
+type Props = {
+  placeholder?: string;
+  initialQuery?: string;
+};
+
+export default function SearchBox({ placeholder = "Buscar...", initialQuery = "" }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [q, setQ] = useState(searchParams?.get("q") ?? "");
+  const [value, setValue] = useState<string>(initialQuery);
 
-  // enviar al presionar Enter
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const query = q.trim();
-      router.push(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
-    }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const q = value.trim();
+    router.push(q ? `/search?q=${encodeURIComponent(q)}` : "/search");
   };
 
-  // botón de limpiar
-  const clear = () => {
-    setQ("");
-    inputRef.current?.focus();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Escape") setValue("");
   };
 
   return (
-    <div className="relative">
-      <span className="absolute left-3 top-2 text-sm text-gray-500">
-        <i className="fas fa-search" aria-hidden="true" />
-      </span>
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <input
-        ref={inputRef}
-        type="text"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        onKeyDown={onKeyDown}
+        type="search"
+        value={value}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="pl-10 pr-8 py-2 text-sm rounded-3xl bg-gray-50 border-none focus:ring-2 focus:ring-blue-500"
+        className="flex-1 rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
         aria-label="Buscar artículos"
       />
-      {q && (
-        <button
-          aria-label="Limpiar búsqueda"
-          className="absolute right-2 top-1.5 text-gray-400 hover:text-gray-600"
-          onClick={clear}
-        >
-          <i className="fas fa-times" />
-        </button>
-      )}
-    </div>
+      <button
+        type="submit"
+        className="rounded-xl bg-blue-600 text-white px-4 py-2 text-sm font-semibold hover:bg-blue-700"
+      >
+        Buscar
+      </button>
+    </form>
   );
 }

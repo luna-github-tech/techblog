@@ -1,16 +1,14 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 
-const config: Config = {
-  darkMode: 'class',
+export default {
+  darkMode: "class",
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    // si usas MDX fuera de esas carpetas, añade sus rutas
-    './content/**/*.{md,mdx}',
+    "./app/**/*.{ts,tsx,mdx,js,jsx}",       // deja js/jsx por si tienes algo suelto
+    "./components/**/*.{ts,tsx,mdx,js,jsx}",
+    "./content/**/*.{md,mdx}",
   ],
   theme: { extend: {} },
-  plugins: [require('@tailwindcss/typography')],
-}
-
-export default config
+  plugins: [typography],
+} satisfies Config;
 

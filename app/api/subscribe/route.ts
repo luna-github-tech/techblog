@@ -15,7 +15,8 @@ export async function POST(req: Request) {
     console.log("Nuevo suscriptor:", email);
 
     return NextResponse.json({ ok: true });
-  } catch (e) {
-    return NextResponse.json({ error: "Error procesando la suscripción" }, { status: 500 });
-  }
+ } catch (e) {
+  console.error("POST /api/subscribe error:", e);
+  return new Response(JSON.stringify({ error: "Error interno" }), { status: 500 });
+}
 }
